@@ -15,6 +15,8 @@ namespace fill_a_pix
             using (var stream = File.OpenRead(@".\puzzles\easy1.txt"))
                 puzzle = FillAPix.FromStream(stream);
 
+            Console.WriteLine(puzzle);
+
             Console.ReadKey();
         }
     }

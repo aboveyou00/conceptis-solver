@@ -53,7 +53,7 @@ namespace fill_a_pix
             var propertiesEl = headerEl.Descendants("properties").First();
             puzzle.Width = (int)propertiesEl.Descendants("numeric").Where(el => (string)el.Attribute("name") == "width").First().Attribute("value");
             puzzle.Height = (int)propertiesEl.Descendants("numeric").Where(el => (string)el.Attribute("name") == "height").First().Attribute("value");
-            puzzle.Name = (string)propertiesEl.Descendants("text").Where(el => (string)el.Attribute("name") == "name").First().Attribute("value");
+            puzzle.Name = (string)propertiesEl.Descendants("text").Where(el => (string)el.Attribute("name") == "name").First();
             puzzle.Difficulty = (int)propertiesEl.Descendants("numeric").Where(el => (string)el.Attribute("name") == "difficulty").First().Attribute("value");
 
             var dataEl = doc.Descendants("data").First();
@@ -106,5 +106,47 @@ namespace fill_a_pix
 
         public int[][] Source { get; private set; }
         public int[][] Solution { get; private set; }
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+
+            sb.Append($"Name: {Name}\r\n");
+            sb.Append($"Creation Date: {CreationDate}\r\n");
+            sb.Append($"Guid: {Guid}\r\n");
+            sb.Append("\r\n");
+
+            var fb = "\u2588";
+            var upb = "\u2580";
+            var downb = "\u2584";
+
+            sb.Append($" {fb}");
+            for (int q = 0; q < Width; q++)
+            {
+                sb.Append($"{upb}{upb}");
+            }
+            sb.Append($"{upb}{fb}");
+            sb.Append("\r\n");
+            foreach (var row in Source)
+            {
+                sb.Append($" {fb}");
+                foreach (var cell in row)
+                {
+                    sb.Append(" ");
+                    if (cell == -1) sb.Append(" ");
+                    else sb.Append($"{cell}");
+                }
+                sb.Append($" {fb}\r\n");
+            }
+            sb.Append($" {fb}");
+            for (int q = 0; q < Width; q++)
+            {
+                sb.Append($"{downb}{downb}");
+            }
+            sb.Append($"{downb}{fb}");
+            sb.Append("\r\n");
+
+            return sb.ToString();
+        }
     }
 }
